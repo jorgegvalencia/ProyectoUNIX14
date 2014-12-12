@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Comprobacion argumentos correctos
-if [ $# -ne 3 ]
+if [ $# -ne 2 ]
 then
-	echo "Uso: $0 <nombre_servicio> <fichero_perfil_configuracion>"
+	echo "Uso: $0 <fichero_configuracion>"
 	exit 1
 fi
 
