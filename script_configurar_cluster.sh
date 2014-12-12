@@ -11,7 +11,16 @@ El administrador ejecuta el script configurar_cluster.sh, pasándole el fichero 
 
 El script se irá conectando por ssh a cada una de las máquinas especificadas e instalando y configurando los servicios indicados.
 
-	./configurar_cluster.sh fichero_configuracion
+#You can prevent interactive prompt without disabling StrictHostKeyChecking (which is insecure).
+#Incorporate the following logic into your script:
+#
+#if [ -z `ssh-keygen -F $IP` ]; then
+#  ssh-keyscan -H $IP >> ~/.ssh/known_hosts
+#fi
+#
+#It checks if public key of the server is in known_hosts. If not, it requests public key from the server and adds it to known_hosts. 
+
+	./configurar_cluster.sh fichero_confiugracion
 
 fichero_configuracion:
 

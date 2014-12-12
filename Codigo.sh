@@ -8,7 +8,7 @@ then
 fi
 
 # Comprobar que se tienen los ficheros necesarios
-scripts="configurar_montaje configurar_raid configurar_lvm configurar_nis_server configurar_nis_client configurar_nfs_server configurar_nfs_client configurar_backup_server configurar_backup_client"
+scripts="configurar_montaje.sh configurar_raid.sh configurar_lvm.sh configurar_nis_server.sh configurar_nis_client.sh configurar_nfs_server.sh configurar_nfs_client.sh configurar_backup_server.sh configurar_backup_client.sh"
 
 for fich in $scripts; do
 	if [ ! -f $fich ]
@@ -45,23 +45,23 @@ for arg in $($CONFIG); do
 		
 		case $SERVICIO in
 		mount )
-			configurar_montaje $FCONF;;
+			`ssh $MAQUINA 'sh -s' < configurar_montaje.sh`;;
 		raid )
-			configurar_raid $FCONF;;
+			configurar_raid.sh $FCONF;;
 		lvm )
-			configurar_lvm $FCONF;;
+			configurar_lvm.sh $FCONF;;
 		nis_server )
-			configurar_nis_server $FCONF;;
+			configurar_nis_server.sh $FCONF;;
 		nis_client )
-			configurar_nis_client $FCONF;;
+			configurar_nis_client.sh $FCONF;;
 		nfs_server )
-			configurar_nfs_server $FCONF;;
+			configurar_nfs_server.sh $FCONF;;
 		nfs_client )
-			configurar_nfs_client $FCONF;;
+			configurar_nfs_client.sh $FCONF;;
 		backup_server )
-			configurar_backup_server $FCONF;;
+			configurar_backup_server.sh $FCONF;;
 		backup_client )
-			configurar_backup_client;;
+			configurar_backup_client.sh $FCONF;;
 		;;
 		esac
 
