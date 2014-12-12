@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Comprobacion argumentos correctos
-if [ $# -ne 2 ]
+if [ $# -ne 1 ]
 then
 	echo "Uso: $0 <fichero_configuracion>"
 	exit 1
@@ -10,12 +10,10 @@ fi
 # Comprobar que se tienen los ficheros necesarios
 scripts="configurar_montaje configurar_raid configurar_lvm configurar_nis_server configurar_nis_client configurar_nfs_server configurar_nfs_client configurar_backup_server configurar_backup_client"
 
-for fich in $scripts do
-	if [ -f $fich ]
+for fich in $scripts; do
+	if [ ! -f $fich ]
 	then
-		echo ""
-	else
-		echo "El fichero $fich no se ha podido encontrar. Abortando ejecución"
+		echo "El fichero "$fich" no se ha podido encontrar. Abortando ejecución"
 		exit 1
 	fi
 done
@@ -25,8 +23,11 @@ done
 #Contador = 2 (Fichero perfil configuración)
 C=0
 
+# Fichero de configuracion sin lineas no validas (# y blancas)
+CONFIG=`grep -v '[[:blank:]]*#' $1 | grep '[[:blank:]]'`
+
 #Se analiza cada palabra del fichero de configuración ($1)
-for arg in $(cat $1); do
+for arg in $($CONFIG); do
 	if [ $C = 0 ];
 	then
 		#Máquina destino
