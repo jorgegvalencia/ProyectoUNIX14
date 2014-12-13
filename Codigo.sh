@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # Comprobacion argumentos correctos
 if [ $# -ne 1 ]
@@ -64,10 +64,6 @@ for arg in $($CONFIG); do
 			configurar_backup_client.sh $FCONF;;
 		;;
 		esac
-
-		#Comienzo del servicio
-		
-		#Fin del servicio
 		
 	else
 		#Error
