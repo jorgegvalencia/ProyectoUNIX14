@@ -13,7 +13,7 @@ for linea in $(cat $1); do
 		PUNTO_MONTAJE=$linea
 	else
 		echo "Error en el formato del fichero de perfil del servicio"
-		exit(1)
+		exit 1
 	fi
 	let C+=1
 done

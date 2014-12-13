@@ -64,10 +64,6 @@ for arg in $($CONFIG); do
 			configurar_backup_client.sh $FCONF;;
 		;;
 		esac
-
-		#Comienzo del servicio
-		
-		#Fin del servicio
 		
 	else
 		#Error
