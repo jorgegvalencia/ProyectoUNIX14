@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # Comprobacion argumentos correctos
 if [ $# -ne 1 ]
