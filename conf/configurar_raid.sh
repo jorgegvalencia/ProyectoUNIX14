@@ -25,4 +25,4 @@ read -a DISPOSITIVOS <<< "$DISPOSITIVOS_AUX"
 IFS=$oldIFS
 
 #Numero de dispositivos = ${#DISPOSITIVOS[*]}
-#Dispositivo i = S{DISPOSITIVOS[i]}
+#Dispositivo i = ${DISPOSITIVOS[i]}
