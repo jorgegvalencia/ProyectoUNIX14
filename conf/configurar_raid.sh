@@ -21,7 +21,7 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$' '
-read -a DISPOSITIVOS <<< "DISPOSITIVOS_AUX"
+read -a DISPOSITIVOS <<< "$DISPOSITIVOS_AUX"
 IFS=$oldIFS
 
 #Numero de dispositivos = ${#DISPOSITIVOS[*]}
