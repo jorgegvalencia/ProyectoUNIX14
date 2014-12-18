@@ -10,10 +10,10 @@ for linea in $(cat $1); do
 		NOMBRE=$linea
 	elif [ $C = 1 ]; then
 		#Lista de dispositivos
-		DISPOSITIVOS_AUX=$linea
+		DISPOSITIVOS=$linea
 	elif [ $C >= 2 ]; then
 		#Volumenes
-		VOLUMENES_AUX[$(($C-2))]=$linea
+		VOLUMENES[$(($C-2))]=$linea
 	else
 		echo "Error en el formato del fichero de perfil del servicio"
 		exit 1
@@ -21,15 +21,19 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$' '
-read -a DISPOSITIVOS <<< "$DISPOSITIVOS_AUX"
 
-#Numero de dispositivos = ${#DISPOSITIVOS[*]}
-#Dispositivo i = S{DISPOSITIVOS[i]}
+#Inicializamos los volumenes fisicos
+pvcreate $DISPOSITIVOS
 
-#Numero de volumenes = ${#VOLUMENES_AUX[*]}
-# Para cada uno hacer:
-# read -a VOLUMEN <<< "${VOLUMENES_AUX[i]}"
-# NOMBRE_VOL = ${VOLUMEN[0]}
-# TAMAÑO_VOL = ${VOLUMEN[1]}
+#Creamos el grupo
+vgcreate $NOMBRE $DISPOSITIVOS
+
+#Creamos los volumenes logicos
+for item in VOLUMENES; do
+	read -a VOLUMEN <<< "$item"
+	NOMBRE_VOL = ${VOLUMEN[0]}
+	SIZE_VOL = ${VOLUMEN[1]}
+	lvcreate --name $NOMBRE_VOL --size $SIZE_VOL $NOMBRE
+done
 
 IFS=$oldIFS
