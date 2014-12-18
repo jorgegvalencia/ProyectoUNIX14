@@ -18,3 +18,8 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$oldIFS
+
+apt-get -y install nis >> /dev/null
+echo "`sed s/"NISCLIENT=false"/"NISCLIENT=true"/g /etc/default/nis`" > /etc/default/nis
+echo "domain $DOMINIO server $SERVIDOR" >> /etc/yp.conf
+/etc/init.d/nis start
