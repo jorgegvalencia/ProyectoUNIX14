@@ -15,3 +15,8 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$oldIFS
+
+apt-get -y install nis >> /dev/null
+echo $DOMINIO >> /etc/defaultdomain
+/usr/lib/yp/ypinit -m
+/etc/init.d/nis start
