@@ -45,23 +45,23 @@ for arg in $($CONFIG); do
 		
 		case $SERVICIO in
 		mount )
-			`ssh $MAQUINA 'sh -s' < configurar_montaje.sh`;;
+			`ssh $MAQUINA 'sh -s' < ./conf/configurar_montaje.sh`;;
 		raid )
-			configurar_raid.sh $FCONF;;
+			./conf/configurar_raid.sh $FCONF;;
 		lvm )
-			configurar_lvm.sh $FCONF;;
+			./conf/configurar_lvm.sh $FCONF;;
 		nis_server )
-			configurar_nis_server.sh $FCONF;;
+			./conf/configurar_nis_server.sh $FCONF;;
 		nis_client )
-			configurar_nis_client.sh $FCONF;;
+			./conf/configurar_nis_client.sh $FCONF;;
 		nfs_server )
-			configurar_nfs_server.sh $FCONF;;
+			./conf/configurar_nfs_server.sh $FCONF;;
 		nfs_client )
-			configurar_nfs_client.sh $FCONF;;
+			./conf/configurar_nfs_client.sh $FCONF;;
 		backup_server )
-			configurar_backup_server.sh $FCONF;;
+			./conf/configurar_backup_server.sh $FCONF;;
 		backup_client )
-			configurar_backup_client.sh $FCONF;;
+			./conf/configurar_backup_client.sh $FCONF;;
 		;;
 		esac
 		
