@@ -24,5 +24,5 @@ IFS=$' '
 read -a DISPOSITIVOS <<< "$DISPOSITIVOS_AUX"
 IFS=$oldIFS
 
-#Numero de dispositivos = ${#DISPOSITIVOS[*]}
-#Dispositivo i = ${DISPOSITIVOS[i]}
+#Creamos el raid
+mdadm --create --name=$NOMBRE -level=$NIVEL --raid-devices=${#DISPOSITIVOS[*]} $DISPOSITIVOS_AUX
