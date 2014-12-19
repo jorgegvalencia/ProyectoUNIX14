@@ -40,56 +40,61 @@ for arg in $($CONFIG); do
 		
 	elif [ $C = 2 ];
 	then
-		#Fichero perfil configuración
+		#Ruta del fichero perfil configuración
 		FCONF=$arg
+		IFS=$'/'
+		read -a FNAME_AUX <<< "$FCONF"
+		N=${#FNAME_AUX[*]}
+		#Nombre del fichero
+		FNAME=${FNAME_AUX[$(($N-1))]}
 		#Creamos el directorio donde alojaremos los ficheros en la máquina
 		ssh $MAQUINA 'mkdir /ASI2014'
 		case $SERVICIO in
 		mount )
 			scp ./conf/configurar_montaje.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_montaje.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_montaje.sh $FNAME'
 			;;
 		#	`ssh $MAQUINA 'sh -s' < ./conf/configurar_montaje.sh`;;
 		raid )
 			scp ./conf/configurar_raid.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_raid.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_raid.sh $FNAME'
 			;;
 		lvm )
 			scp ./conf/configurar_lvm.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_lvm.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_lvm.sh $FNAME'
 			;;
 		nis_server )
 			scp ./conf/configurar_nis_server.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_nis_server.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_nis_server.sh $FNAME'
 			;;
 		nis_client )
 			scp ./conf/configurar_nis_client.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_nis_client.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_nis_client.sh $FNAME'
 			;;
 		nfs_server )
 			scp ./conf/configurar_nfs_server.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_nfs_server.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_nfs_server.sh $FNAME'
 			;;
 		nfs_client )
 			scp ./conf/configurar_nfs_client.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_nfs_client.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_nfs_client.sh $FNAME'
 			;;
 		backup_server )
 			scp ./conf/configurar_backup_server.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_backup_server.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_backup_server.sh $FNAME'
 			;;
 		backup_client )
 			scp ./conf/configurar_backup_client.sh root@$MAQUINA:/ASI2014/
 			scp $FCONF root@$MAQUINA:/ASI2014/
-			ssh $MAQUINA '/ASI2014/configurar_backup_client.sh $FCONF' < /dev/null
+			ssh $MAQUINA '/ASI2014/configurar_backup_client.sh $FNAME'
 			;;
 		;;
 		esac
