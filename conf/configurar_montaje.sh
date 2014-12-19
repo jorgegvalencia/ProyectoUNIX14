@@ -18,6 +18,5 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$oldIFS
-#Editamos el fichero fstab para hacer los cambios permanentes
-echo "#File system: $NOMBRE" >> /etc/fstab
-echo "$NOMBRE $PUNTO_MONTAJE auto defaults,auto,rw 0 0" >> /etc/fstab
+#Editamos el fichero fstab para hacer los cambios persistentes
+`mount $NOMBRE $PUNTO_MONTAJE` && echo "#Device: $NOMBRE" >> /etc/fstab && echo "$NOMBRE $PUNTO_MONTAJE auto defaults,auto,rw 0 0" >> /etc/fstab || echo "Error al montar el dispositivo"
