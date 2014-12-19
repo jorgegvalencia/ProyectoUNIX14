@@ -20,7 +20,6 @@ for linea in $(cat $1); do
 	fi
 	let C+=1
 done
-IFS=$' '
 
 #Inicializamos los volumenes fisicos
 pvcreate $DISPOSITIVOS
@@ -29,7 +28,8 @@ pvcreate $DISPOSITIVOS
 vgcreate $NOMBRE $DISPOSITIVOS
 
 #Creamos los volumenes logicos
-for item in VOLUMENES; do
+for item in ${VOLUMENES[*]}; do
+	IFS=$' '
 	read -a VOLUMEN <<< "$item"
 	NOMBRE_VOL = ${VOLUMEN[0]}
 	SIZE_VOL = ${VOLUMEN[1]}
