@@ -14,5 +14,10 @@ if [ $C < 1 ]; then
 	exit 1
 fi
 IFS=$oldIFS
-#Numero de directorios = ${#DIRECTORIOS[*]}
-#Directorio i = ${DIRECTORIOS[i]}
+
+#Instalamos los paquetes necesarios
+apt-get install nfs-common >> /dev/null
+apt-get install nfs-kernel-server >> /dev/null
+for DIR in ${DIRECTORIOS[*]}; do
+	echo "$DIR (rw)" >> /etc/exports
+done
