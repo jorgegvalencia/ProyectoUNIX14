@@ -11,9 +11,9 @@ fi
 scripts="configurar_montaje.sh configurar_raid.sh configurar_lvm.sh configurar_nis_server.sh configurar_nis_client.sh configurar_nfs_server.sh configurar_nfs_client.sh configurar_backup_server.sh configurar_backup_client.sh"
 
 for fich in $scripts; do
-	if [ ! -f $fich ]
+	if [ ! -f ./conf/$fich ]
 	then
-		echo "El fichero "$fich" no se ha podido encontrar. Abortando ejecución"
+		echo "El fichero ./conf/"$fich" no se ha podido encontrar. Abortando ejecución"
 		exit 1
 	fi
 done
@@ -45,30 +45,58 @@ for arg in $($CONFIG); do
 		
 		case $SERVICIO in
 		mount )
-			`ssh $MAQUINA 'sh -s' < ./conf/configurar_montaje.sh`;;
+			scp ./conf/configurar_montaje.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_montaje.sh $FCONF' < /dev/null
+			;;
+		#	`ssh $MAQUINA 'sh -s' < ./conf/configurar_montaje.sh`;;
 		raid )
-			./conf/configurar_raid.sh $FCONF;;
+			scp ./conf/configurar_raid.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_raid.sh $FCONF' < /dev/null
+			;;
 		lvm )
-			./conf/configurar_lvm.sh $FCONF;;
+			scp ./conf/configurar_lvm.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_lvm.sh $FCONF' < /dev/null
+			;;
 		nis_server )
-			./conf/configurar_nis_server.sh $FCONF;;
+			scp ./conf/configurar_nis_server.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_nis_server.sh $FCONF' < /dev/null
+			;;
 		nis_client )
-			./conf/configurar_nis_client.sh $FCONF;;
+			scp ./conf/configurar_nis_client.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_nis_client.sh $FCONF' < /dev/null
+			;;
 		nfs_server )
-			./conf/configurar_nfs_server.sh $FCONF;;
+			scp ./conf/configurar_nfs_server.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_nfs_server.sh $FCONF' < /dev/null
+			;;
 		nfs_client )
-			./conf/configurar_nfs_client.sh $FCONF;;
+			scp ./conf/configurar_nfs_client.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_nfs_client.sh $FCONF' < /dev/null
+			;;
 		backup_server )
-			./conf/configurar_backup_server.sh $FCONF;;
+			scp ./conf/configurar_backup_server.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_backup_server.sh $FCONF' < /dev/null
+			;;
 		backup_client )
-			./conf/configurar_backup_client.sh $FCONF;;
+			scp ./conf/configurar_backup_client.sh root@$MAQUINA:~/ASI2014/
+			scp $FCONF root@$MAQUINA:~/ASI2014/
+			ssh $MAQUINA '~/ASI2014/configurar_backup_client.sh $FCONF' < /dev/null
+			;;
 		;;
 		esac
 		
 	else
 		#Error
 		echo 'Error al aumentar el contador'
-		exit(1)
+		exit 1
 	fi
 	
 	#Se incrementa el contador
