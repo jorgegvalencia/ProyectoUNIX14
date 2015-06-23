@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#Recopilamos la informacion del fichero de perfil del servicio
 oldIFS=$IFS
 IFS=$'\n'
 C=0
@@ -11,7 +10,6 @@ for linea in $(cat $1); do
 	elif [ $C = 1 ]; then
 		#Punto de montaje
 		NIVEL=$linea
-		echo "$NIVEL"
 	elif [ $C = 2 ]; then
 		#Dispositivos
 		DISPOSITIVOS_AUX=$linea
@@ -25,8 +23,9 @@ IFS=$' '
 read -a DISPOSITIVOS <<< "$DISPOSITIVOS_AUX"
 IFS=$oldIFS
 
-echo "Creando raid"
-#Instalar el servicio
-apt-get -y install mdadm > /dev/null && echo "Servicio mdadm instalado"
-#Montar el RAID y guardar configuracion del RAID
-mdadm --create -R --name=$NOMBRE --level=$NIVEL --raid-devices=${#DISPOSITIVOS[*]} $NOMBRE $DISPOSITIVOS_AUX 2> /dev/null  && mdadm --detail $NOMBRE --brief >> /etc/mdadm/mdadm.conf && echo "El RAID "$NOMBRE" de nivel "$NIVEL" ha sido creado con exito" || echo "Error: fallo en la creacion del RAID"
+#Instalar la herramienta mdadm
+echo "Preparando configuración del RAID $NOMBRE Nivel $NIVEL"
+#apt-get -y install mdadm >> /dev/null && echo "Servicio mdadm instalado"
+#Montar el RAID y guardar la configuración
+echo "Creando raid..."
+#mdadm --create -R --name=$NOMBRE --level=$NIVEL --raid-devices=${#DISPOSITIVOS[*]} $NOMBRE $DISPOSITIVOS_AUX
