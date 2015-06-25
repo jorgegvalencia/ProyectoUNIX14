@@ -5,13 +5,13 @@ oldIFS=$IFS
 IFS=$'\n'
 C=0
 for linea in $(cat $1); do
-	if [ $C = 0 ]; then
+	if [ $C = 0 ]; 	then
 		#Nombre del grupo de volumenes
 		NOMBRE=$linea
 	elif [ $C = 1 ]; then
 		#Lista de dispositivos
 		DISPOSITIVOS=$linea
-	elif [ $C >= 2 ]; then
+	elif [ $C > 1 ]; then
 		#Volumenes
 		VOLUMENES[$(($C-2))]=$linea
 	else
@@ -20,20 +20,29 @@ for linea in $(cat $1); do
 	fi
 	let C+=1
 done
+IFS=$' '
+
+#Instalamos el servicio
+echo 'Instalando el servicio...'
+apt-get install lvm2 >> /dev/null
 
 #Inicializamos los volumenes fisicos
-pvcreate $DISPOSITIVOS
+echo 'Inicializando volumenes fisicos...'
+pvcreate $DISPOSITIVOS >> /dev/null
 
 #Creamos el grupo
 vgcreate $NOMBRE $DISPOSITIVOS
-
+echo 'Creando el grupo...'
+vgcreate $NOMBRE $DISPOSITIVOS >> /dev/null
+IFS=$'\n'
 #Creamos los volumenes logicos
+echo 'Creando volumenes logicos...'
 for item in ${VOLUMENES[*]}; do
-	IFS=$' '
+        IFS=$' '
 	read -a VOLUMEN <<< "$item"
-	NOMBRE_VOL = ${VOLUMEN[0]}
-	SIZE_VOL = ${VOLUMEN[1]}
-	lvcreate --name $NOMBRE_VOL --size $SIZE_VOL $NOMBRE
+	NOMBRE_VOL=${VOLUMEN[0]}
+	SIZE_VOL=${VOLUMEN[1]}
+	lvcreate --name $NOMBRE_VOL --size $SIZE_VOL $NOMBRE >> /dev/null
 done
 
 IFS=$oldIFS
