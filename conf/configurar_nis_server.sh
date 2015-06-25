@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#Recopilamos la informacion del fichero de perfil del servicio
+#Recopilamos la información del fichero de perfil del servicio
 oldIFS=$IFS
 IFS=$'\n'
 C=0
 for linea in $(cat $1); do
 	if [ $C = 0 ]; then
-		#Nombre del dominio nis
+		#Nomnre del dominio nis
 		DOMINIO=$linea
 	else
 		echo "Error en el formato del fichero de perfil del servicio"
@@ -18,5 +18,7 @@ IFS=$oldIFS
 
 apt-get -y install nis >> /dev/null
 echo $DOMINIO >> /etc/defaultdomain
-/usr/lib/yp/ypinit -m
-/etc/init.d/nis start
+echo "`sed s/"NISSERVER=false"/"NISSERVER=true"/g /etc/default/nis`" > /etc/default/nis
+echo "`sed s/"NISCLIENT=true"/"NISCLIENT=false"/g /etc/default/nis`" > /etc/default/nis
+#/usr/lib/yp/ypinit -m
+#/etc/init.d/nis start
