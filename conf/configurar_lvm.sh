@@ -24,7 +24,8 @@ IFS=$' '
 
 #Instalamos el servicio
 echo 'Instalando el servicio...'
-apt-get install lvm2 >> /dev/null
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y install lvm2 --no-install-recommends > /dev/null
 
 #Inicializamos los volumenes fisicos
 echo 'Inicializando volumenes fisicos...'
