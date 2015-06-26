@@ -31,7 +31,6 @@ echo 'Inicializando volumenes fisicos...'
 pvcreate $DISPOSITIVOS >> /dev/null
 
 #Creamos el grupo
-vgcreate $NOMBRE $DISPOSITIVOS
 echo 'Creando el grupo...'
 vgcreate $NOMBRE $DISPOSITIVOS >> /dev/null
 IFS=$'\n'

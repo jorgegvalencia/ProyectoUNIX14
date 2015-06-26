@@ -18,8 +18,10 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$oldIFS
-
+export DEBIAN_FRONTEND=noninteractive
+echo "Instalando nis..."
 apt-get -y install nis >> /dev/null
+echo "Configurando cliente nis..."
 echo "`sed s/"NISCLIENT=false"/"NISCLIENT=true"/g /etc/default/nis`" > /etc/default/nis
 echo "
 # yp.conf       Configuration file for the ypbind process. You can define

@@ -1,23 +1,28 @@
 #!/bin/bash
 
-#Recopilamos la informacion del fichero de perfil del servicio
+#Recopilamos la informacion de fichero de perfil de servicio
 oldIFS=$IFS
 IFS=$'\n'
 C=0
 for linea in $(cat $1); do
-	#Nombre del dominio
-	DIRECTORIOS[$C]=$linea
-	let C+=1
+    #Nombre del dominio
+    DIRECTORIOS[$C]=$linea
+    let C+=1
 done
 if [ $C < 1 ]; then
-	echo "Error en el formato del fichero de perfil del servicio"
-	exit 1
+    echo "Error en el formato del fichero de perfil del servicio"
+    exit 1
 fi
 IFS=$oldIFS
 
 #Instalamos los paquetes necesarios
-apt-get install nfs-common >> /dev/null
-apt-get install nfs-kernel-server >> /dev/null
+export DEBIAN_FRONTEND=noninteractive
+echo "Instalando nfs-common..."
+apt-get -y install nfs-common --no-install-recommends > /dev/null
+echo "Instalando nfs-kernel-server..."
+apt-get -y install nfs-kernel-server --no-install-recommends > /dev/null
+echo "Configurando servidor nfs..."
 for DIR in ${DIRECTORIOS[*]}; do
-	echo "$DIR (rw)" >> /etc/exports
+    echo "$DIR *(rw,sync)" >> /etc/exports
 done
+echo "Configuración del servidor nfs completada"
