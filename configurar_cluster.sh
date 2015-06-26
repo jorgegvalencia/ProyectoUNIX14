@@ -71,15 +71,15 @@ for arg in $CONFIG; do
 		echo 'Fichero de perfil de configuración: '$FCONF
 		#Creamos el directorio temporal donde situaremos los ficheros de configuración
 		echo 'Preparando archivos...'
-		ssh root@$MAQUINA 'mkdir ~/ASI2014/'
-		scp $FCONF root@$MAQUINA:~/ASI2014/$FCONF
-		scp ./conf/$SCRIPT root@$MAQUINA:~/ASI2014/$SCRIPT
+		ssh root@$MAQUINA 'mkdir ~/ASI2014/' > /dev/null
+		scp $FCONF root@$MAQUINA:~/ASI2014/$FCONF > /dev/null
+		scp ./conf/$SCRIPT root@$MAQUINA:~/ASI2014/$SCRIPT > /dev/null
 		#Ejecutamos el servicio
 		echo 'Configurando servicio...'
-		ssh root@$MAQUINA "chmod +x ~/ASI2014/$SCRIPT"
-		ssh root@$MAQUINA "~/ASI2014/$SCRIPT ~/ASI2014/$FCONF"
+		ssh root@$MAQUINA "chmod +x ~/ASI2014/$SCRIPT" > /dev/null
+		ssh root@$MAQUINA "~/ASI2014/$SCRIPT ~/ASI2014/$FCONF" > /dev/null
 		#Eliminamos los ficheros de configuración temporales utilizados
-		ssh root@$MAQUINA 'rm -r ~/ASI2014/'
+		ssh root@$MAQUINA 'rm -r ~/ASI2014/' > /dev/null
 	else
 		#Error
 		echo 'ERROR en el fichero de configuración: Formato incorrecto.'
