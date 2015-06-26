@@ -25,7 +25,10 @@ IFS=$oldIFS
 
 #Instalar la herramienta mdadm
 echo "Preparando configuración del RAID $NOMBRE Nivel $NIVEL"
-#apt-get -y install mdadm >> /dev/null && echo "Servicio mdadm instalado"
+echo "Instalando mdadm..."
+# Fuente: http://serverfault.com/questions/578068/install-mdadm-without-user-input-in-wheezy
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y install mdadm --no-install-recommends >> /dev/null && echo "Servicio mdadm instalado"
 #Montar el RAID y guardar la configuración
 echo "Creando raid..."
-#mdadm --create -R --name=$NOMBRE --level=$NIVEL --raid-devices=${#DISPOSITIVOS[*]} $NOMBRE $DISPOSITIVOS_AUX
+mdadm --create -R --name=$NOMBRE --level=$NIVEL --raid-devices=${#DISPOSITIVOS[*]} $NOMBRE $DISPOSITIVOS_AUX
