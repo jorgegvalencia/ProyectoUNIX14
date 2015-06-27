@@ -9,18 +9,19 @@ for linea in $(cat $1); do
 		#Nomnre del dominio nis
 		DOMINIO=$linea
 	else
-		echo "Error en el formato del fichero de perfil del servicio"
+		echo "CONFIG: Error en el formato del fichero de perfil del servicio"
 		exit 1
 	fi
 	let C+=1
 done
 IFS=$oldIFS
 export DEBIAN_FRONTEND=noninteractive
-echo "Instalando nis..."
+echo "CONFIG: Instalando NIS..."
 apt-get -y install nis >> /dev/null
-echo "Configurando servidor nis..."
+echo "CONFIG: Configurando servidor NIS..."
 echo $DOMINIO >> /etc/defaultdomain
 echo "`sed s/"NISSERVER=false"/"NISSERVER=true"/g /etc/default/nis`" > /etc/default/nis
 echo "`sed s/"NISCLIENT=true"/"NISCLIENT=false"/g /etc/default/nis`" > /etc/default/nis
-#/usr/lib/yp/ypinit -m
+/usr/lib/yp/ypinit -m > /dev/null
+echo "CONFIG: Configuración del servidor NIS completada"
 #/etc/init.d/nis start

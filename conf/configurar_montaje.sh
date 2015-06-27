@@ -10,7 +10,7 @@ for linea in $(cat $1); do
 		#Punto de montaje
 		PUNTO_MONTAJE=$linea
 	else
-		echo "Error en el formato del fichero de perfil del servicio"
+		echo "CONFIG: Error en el formato del fichero de perfil del servicio"
 		exit 1
 	fi
 	let C+=1
@@ -20,6 +20,6 @@ done
 if ! grep -q "$NOMBRE[[:blank:]]*$PUNTO_MONTAJE[[:blank:]]*auto[[:blank:]]*defaults[[:blank:]]*,[[:blank:]]*auto[[:blank:]]*,[[:blank:]]*rw[[:blank:]]*0[[:blank:]]*0" /etc/fstab
 then
 	#Editamos el fichero fstab para hacer los cambios persistentes
-	'mount $NOMBRE $PUNTO_MONTAJE' && echo "#Device: $NOMBRE" >> /etc/fstab && echo "$NOMBRE $PUNTO_MONTAJE auto defaults,auto,rw 0 0" >> /etc/fstab || echo "Error al montar el dispositivo"
+	'mount $NOMBRE $PUNTO_MONTAJE' && echo "#Device: $NOMBRE" >> /etc/fstab && echo "$NOMBRE $PUNTO_MONTAJE auto defaults,auto,rw 0 0" >> /etc/fstab && echo "CONFIG: Configuración del montaje completada" || echo "CONFIG: Error al montar el dispositivo"
 fi
 

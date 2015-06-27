@@ -15,7 +15,7 @@ for linea in $(cat $1); do
 		#Volumenes
 		VOLUMENES[$(($C-2))]=$linea
 	else
-		echo "Error en el formato del fichero de perfil del servicio"
+		echo "CONFIG: Error en el formato del fichero de perfil del servicio"
 		exit 1
 	fi
 	let C+=1
@@ -23,26 +23,26 @@ done
 IFS=$' '
 
 #Instalamos el servicio
-echo 'Instalando el servicio...'
+echo 'CONFIG: Instalando el servicio...'
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install lvm2 --no-install-recommends > /dev/null
 
 #Inicializamos los volumenes fisicos
-echo 'Inicializando volumenes fisicos...'
+echo 'CONFIG: Inicializando volumenes fisicos...'
 pvcreate $DISPOSITIVOS >> /dev/null
 
 #Creamos el grupo
-echo 'Creando el grupo...'
+echo 'CONFIG: Creando el grupo...'
 vgcreate $NOMBRE $DISPOSITIVOS >> /dev/null
 IFS=$'\n'
 #Creamos los volumenes logicos
-echo 'Creando volumenes logicos...'
+echo 'CONFIG: Creando volumenes logicos...'
 for item in ${VOLUMENES[*]}; do
         IFS=$' '
 	read -a VOLUMEN <<< "$item"
 	NOMBRE_VOL=${VOLUMEN[0]}
 	SIZE_VOL=${VOLUMEN[1]}
-	lvcreate --name $NOMBRE_VOL --size $SIZE_VOL $NOMBRE >> /dev/null
+	lvcreate --name $NOMBRE_VOL --size $SIZE_VOL $NOMBRE >> /dev/null && echo "CONFIG: Volumen $NOMBRE_VOL $SIZE_VOL creado" || echo "CONFIG: Fallo al crear el volúmen $NOMBRE_VOL"
 done
 
 IFS=$oldIFS

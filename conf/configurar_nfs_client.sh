@@ -10,15 +10,15 @@ for linea in $(cat $1); do
     let C+=1
 done
 if [ $C < 1 ]; then
-    echo "Error en el formato del fichero de perfil del servicio"
+    echo "CONFIG: Error en el formato del fichero de perfil del servicio"
     exit 1
 fi
 
 #Instalamos el paquete
 export DEBIAN_FRONTEND=noninteractive
-echo "Instalando nfs-common..."
+echo "CONFIG: Instalando nfs-common..."
 apt-get -y install nfs-common --no-install-recommends > /dev/null
-echo "Configurando cliente nfs..."
+echo "CONFIG: Configurando cliente nfs..."
 for SF in ${DIRECTORIOS[*]}; do
     echo "$SF nfs defaults,auto 0 0" >> /etc/fstab
 done

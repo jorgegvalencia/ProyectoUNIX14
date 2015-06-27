@@ -9,9 +9,11 @@ for linea in $(cat $1); do
 		#Directorio Backup
 		DIRECTORIO=$linea
 	else
-		echo "Error en el formato del fichero de perfil del servicio"
+		echo "CONFIG: Error en el formato del fichero de perfil del servicio"
 		exit 1
 	fi
 	let C+=1
 done
 IFS=$oldIFS
+echo 'CONFIG: Creando directorio de backup...'
+mkdir -p $DIRECTORIO

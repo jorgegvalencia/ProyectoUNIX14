@@ -10,19 +10,19 @@ for linea in $(cat $1); do
     let C+=1
 done
 if [ $C < 1 ]; then
-    echo "Error en el formato del fichero de perfil del servicio"
+    echo "CONFIG: Error en el formato del fichero de perfil del servicio"
     exit 1
 fi
 IFS=$oldIFS
 
 #Instalamos los paquetes necesarios
 export DEBIAN_FRONTEND=noninteractive
-echo "Instalando nfs-common..."
+echo "CONFIG: Instalando nfs-common..."
 apt-get -y install nfs-common --no-install-recommends > /dev/null
-echo "Instalando nfs-kernel-server..."
+echo "CONFIG: Instalando nfs-kernel-server..."
 apt-get -y install nfs-kernel-server --no-install-recommends > /dev/null
-echo "Configurando servidor nfs..."
+echo "CONFIG: Configurando servidor nfs..."
 for DIR in ${DIRECTORIOS[*]}; do
     echo "$DIR *(rw,sync)" >> /etc/exports
 done
-echo "Configuración del servidor nfs completada"
+echo "CONFIG: Configuración del servidor nfs completada"

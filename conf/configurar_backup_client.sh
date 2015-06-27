@@ -18,9 +18,12 @@ for linea in $(cat $1); do
 		#Perioricidad en horas
 		HORAS=$linea
 	else
-		echo "Error en el formato del fichero de perfil del servicio"
+		echo "CONFIG: Error en el formato del fichero de perfil del servicio"
 		exit 1
 	fi
 	let C+=1
 done
 IFS=$oldIFS
+
+echo 'CONFIG: Configurando tarea periodica de backup...'
+echo "0 */$HORAS * * * rsync --recursive $DIRECTORIO $DIR_SERVER:$DESTINO" >> /etc/crontab && echo "CONFIG: Backup configurado correctamente" || echo "CONFIG: Fallo al configurar el servicio de backup"

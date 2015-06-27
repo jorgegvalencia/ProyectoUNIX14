@@ -14,7 +14,7 @@ for linea in $(cat $1); do
 		#Dispositivos
 		DISPOSITIVOS_AUX=$linea
 	else
-		echo "Error en el formato del fichero de perfil del servicio"
+		echo "CONFIG: Error en el formato del fichero de perfil del servicio"
 		exit 1
 	fi
 	let C+=1
@@ -24,11 +24,11 @@ read -a DISPOSITIVOS <<< "$DISPOSITIVOS_AUX"
 IFS=$oldIFS
 
 #Instalar la herramienta mdadm
-echo "Preparando configuración del RAID $NOMBRE Nivel $NIVEL"
-echo "Instalando mdadm..."
+echo "CONFIG: Preparando configuración del RAID $NOMBRE Nivel $NIVEL"
+echo "CONFIG: Instalando mdadm..."
 # Fuente: http://serverfault.com/questions/578068/install-mdadm-without-user-input-in-wheezy
 export DEBIAN_FRONTEND=noninteractive
-apt-get -y install mdadm --no-install-recommends >> /dev/null && echo "Servicio mdadm instalado"
+apt-get -y install mdadm --no-install-recommends > /dev/null 2>&1 && echo "CONFIG: Servicio mdadm instalado" 
 #Montar el RAID y guardar la configuración
-echo "Creando raid..."
-mdadm --create -R --name=$NOMBRE --level=$NIVEL --raid-devices=${#DISPOSITIVOS[*]} $NOMBRE $DISPOSITIVOS_AUX
+echo "CONFIG: Creando raid..."
+mdadm --create -R --name=$NOMBRE --level=$NIVEL --metadata=0.90 --raid-devices=${#DISPOSITIVOS[*]} $NOMBRE $DISPOSITIVOS_AUX > /dev/null 2>&1 && echo "CONFIG: RAID creado" || echo "CONFIG: Fallo al crear el RAID"
