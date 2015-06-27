@@ -20,11 +20,12 @@ export DEBIAN_FRONTEND=noninteractive
 echo "CONFIG: Instalando NIS..."
 apt-get -y install nis --no-install-recommends >> /dev/null
 echo "CONFIG: Configurando servidor NIS..."
-echo "domain $DOMINIO server $SERVIDOR" > /etc/yp.conf
 echo $DOMINIO > /etc/defaultdomain && echo "CONFIG: Establecido nombre de dominio a \"$DOMINIO\""
-echo "`sed s/"NISSERVER=false"/"NISSERVER=master"/g /etc/default/nis`" > /etc/default/nis
+echo "domain $DOMINIO server $SERVIDOR" > /etc/yp.conf
+echo "`sed s/"NISSERVER=false"/"NISSERVER=true"/g /etc/default/nis`" > /etc/default/nis
 echo "`sed s/"NISCLIENT=true"/"NISCLIENT=false"/g /etc/default/nis`" > /etc/default/nis
 echo "CONFIG: Configuración del servidor NIS completada"
 EOF | /usr/lib/yp/ypinit -m > /dev/null 2>&1
 #make -C /var/yp
+#/etc/init.d/portmap restart
 /etc/init.d/nis restart
