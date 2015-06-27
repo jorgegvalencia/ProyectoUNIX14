@@ -22,7 +22,7 @@ done
 CONFIG=`grep -v '[[:blank:]]*#' $1 | grep '[[:blank:]]'`
 
 #Comprobar numero de parametros correctos en fichero de configuración
-services="mount raid lvm nis_server nis_client nfs_server nfs_client backup_server backup_client"
+services=" mount raid lvm nis_server nis_client nfs_server nfs_client backup_server backup_client "
 IFS=$'\n'
 LINE=0
 for arg in $CONFIG; do
@@ -54,12 +54,6 @@ for arg in $CONFIG; do
 	LINEA=()
 done
 
-CONFIG=`grep -v '[[:blank:]]*#' $1 | grep '[[:blank:]]'`
-
-#Contador = 0 (Máquina destino)
-#Contador = 1 (Nombre servicio)
-#Contador = 2 (Fichero perfil configuración)
-#C=0
 IFS=$'\n'
 for arg in $CONFIG; do
 	IFS=$' '

@@ -9,7 +9,7 @@ for linea in $(cat $1); do
     DIRECTORIOS[$C]=$linea
     let C+=1
 done
-if [ $C < 1 ]; then
+if [ $C -lt 1 ]; then
     echo "CONFIG: Error en el formato del fichero de perfil del servicio"
     exit 1
 fi
@@ -21,6 +21,7 @@ echo "CONFIG: Instalando nfs-common..."
 apt-get -y install nfs-common --no-install-recommends > /dev/null
 echo "CONFIG: Configurando cliente nfs..."
 for SF in ${DIRECTORIOS[*]}; do
+	mount -t nfs $SF
     echo "$SF nfs defaults,auto 0 0" >> /etc/fstab
 done
 

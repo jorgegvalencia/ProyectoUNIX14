@@ -9,7 +9,7 @@ for linea in $(cat $1); do
     DIRECTORIOS[$C]=$linea
     let C+=1
 done
-if [ $C < 1 ]; then
+if [ $C -lt 1 ]; then
     echo "CONFIG: Error en el formato del fichero de perfil del servicio"
     exit 1
 fi
@@ -26,4 +26,5 @@ echo "CONFIG: Configurando servidor nfs..."
 for DIR in ${DIRECTORIOS[*]}; do
     echo "$DIR *(rw,sync)" >> /etc/exports
 done
+/etc/init.d/nfs-kernel-server restart
 echo "CONFIG: Configuración del servidor nfs completada"
