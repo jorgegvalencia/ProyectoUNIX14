@@ -40,7 +40,7 @@ for arg in $CONFIG; do
 			fi
 		elif [ $C -eq 2 ]; then
 			if [ ! -f ${LINEA[$C]} ]; then
-				echo "CONFIG: El fichero de perfil de configuración no se encuentra disponible. Abortando..."
+				echo "CONFIG: El fichero de perfil de configuración \"${LINEA[$C]}\" no se encuentra disponible. Abortando..."
 				exit 1
 			fi
 		fi
@@ -54,11 +54,13 @@ for arg in $CONFIG; do
 	LINEA=()
 done
 
+CONFIG=`grep -v '[[:blank:]]*#' $1 | grep '[[:blank:]]'`
+
 #Contador = 0 (Máquina destino)
 #Contador = 1 (Nombre servicio)
 #Contador = 2 (Fichero perfil configuración)
 C=0
-
+IFS=' '
 for arg in $CONFIG; do
 	if [ $C = 0 ];
 	then
