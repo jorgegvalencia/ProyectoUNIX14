@@ -15,6 +15,7 @@ if [ $C < 1 ]; then
 fi
 
 #Instalamos el paquete
+apt-get -y update > /dev/null 2>&1 && echo "CONFIG: Actualizando paquetes..."
 export DEBIAN_FRONTEND=noninteractive
 echo "CONFIG: Instalando nfs-common..."
 apt-get -y install nfs-common --no-install-recommends > /dev/null

@@ -24,6 +24,7 @@ IFS=$' '
 
 #Instalamos el servicio
 echo 'CONFIG: Instalando el servicio...'
+apt-get -y update > /dev/null 2>&1 && echo "CONFIG: Actualizando paquetes..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install lvm2 --no-install-recommends > /dev/null
 

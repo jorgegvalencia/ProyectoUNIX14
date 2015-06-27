@@ -59,17 +59,16 @@ CONFIG=`grep -v '[[:blank:]]*#' $1 | grep '[[:blank:]]'`
 #Contador = 0 (Máquina destino)
 #Contador = 1 (Nombre servicio)
 #Contador = 2 (Fichero perfil configuración)
-C=0
-IFS=' '
+#C=0
+IFS=$'\n'
 for arg in $CONFIG; do
-	if [ $C = 0 ];
-	then
+	IFS=$' '
+	read -a LINEA <<< $arg 
+	IFS=$'\n'
 		#Máquina destino
-		MAQUINA=$arg
-	elif [ $C = 1 ];
-	then
+		MAQUINA=${LINEA[0]}
 		#Nombre servicio
-		SERVICIO=$arg
+		SERVICIO=${LINEA[1]}
 		case $SERVICIO in
 		mount )
 			SCRIPT=configurar_montaje.sh
@@ -103,27 +102,17 @@ for arg in $CONFIG; do
 			exit 1
 			;;
 		esac
-	elif [ $C = 2 ];
-	then
 		#Ruta del fichero perfil configuración
-		FCONF=$arg
+		FCONF=${LINEA[2]}
 		echo 'CONFIG: Fichero de perfil de configuración: '$FCONF
 		#Creamos el directorio temporal donde situaremos los ficheros de configuración
 		echo 'CONFIG: Preparando archivos...'
-		ssh root@$MAQUINA 'mkdir ~/ASI2014/' > /dev/null
-		scp $FCONF root@$MAQUINA:~/ASI2014/$FCONF > /dev/null
-		scp ./conf/$SCRIPT root@$MAQUINA:~/ASI2014/$SCRIPT > /dev/null
+		ssh root@$MAQUINA 'mkdir ~/ASI2014/' > /dev/null 2>&1 || { echo "CONFIG: No es posible establecer conexion con la máquina. Abortando" ; exit 1; }
+		scp $FCONF root@$MAQUINA:~/ASI2014/$FCONF > /dev/null 2>&1
+		scp ./conf/$SCRIPT root@$MAQUINA:~/ASI2014/$SCRIPT > /dev/null 2>&1
 		#Ejecutamos el servicio
-		echo 'CONFIG: Configurando servicio...'
-		ssh root@$MAQUINA "chmod +x ~/ASI2014/$SCRIPT" > /dev/null
-		ssh root@$MAQUINA "~/ASI2014/$SCRIPT ~/ASI2014/$FCONF"
+		ssh root@$MAQUINA "chmod +x ~/ASI2014/$SCRIPT" > /dev/null 2>&1
+		ssh root@$MAQUINA "~/ASI2014/$SCRIPT ~/ASI2014/$FCONF" 2>&1
 		#Eliminamos los ficheros de configuración temporales utilizados
-		ssh root@$MAQUINA 'rm -r ~/ASI2014/' > /dev/null
-	else
-		#Error
-		echo 'CONFIG: Error en el fichero de configuración: Formato incorrecto.'
-	fi
-	#Se aumenta el contador y se calcula el módulo
-	let C+=1
-	let C%=3
+		ssh root@$MAQUINA 'rm -r ~/ASI2014/' > /dev/null 2>&1
 done

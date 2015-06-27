@@ -18,9 +18,10 @@ for linea in $(cat $1); do
 	let C+=1
 done
 IFS=$oldIFS
+apt-get -y update > /dev/null 2>&1 && echo "CONFIG: Actualizando paquetes..."
 export DEBIAN_FRONTEND=noninteractive
 echo "CONFIG: Instalando NIS..."
-apt-get -y install nis >> /dev/null
+apt-get -y install nis --no-install-recommends >> /dev/null
 echo "CONFIG: Configurando cliente NIS..."
 echo "`sed s/"NISCLIENT=false"/"NISCLIENT=true"/g /etc/default/nis`" > /etc/default/nis
 echo "
