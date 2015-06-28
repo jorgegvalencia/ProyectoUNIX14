@@ -14,14 +14,15 @@ for linea in $(cat $1); do
 	fi
 	let C+=1
 done
+SERVIDOR=`hostname`
 IFS=$oldIFS
 apt-get -y update > /dev/null 2>&1 && echo "CONFIG: Actualizando paquetes..."
 export DEBIAN_FRONTEND=noninteractive
 echo "CONFIG: Instalando NIS..."
-apt-get -y install nis --no-install-recommends >> /dev/null
+apt-get -y install nis --no-install-recommends > /dev/null
 echo "CONFIG: Configurando servidor NIS..."
 echo $DOMINIO > /etc/defaultdomain && echo "CONFIG: Establecido nombre de dominio a \"$DOMINIO\""
-echo "domain $DOMINIO server $SERVIDOR" > /etc/yp.conf
+echo "domain $DOMINIO server $SERVIDOR" >> /etc/yp.conf
 echo "`sed s/"NISSERVER=false"/"NISSERVER=true"/g /etc/default/nis`" > /etc/default/nis
 echo "`sed s/"NISCLIENT=true"/"NISCLIENT=false"/g /etc/default/nis`" > /etc/default/nis
 echo "CONFIG: Configuración del servidor NIS completada"
